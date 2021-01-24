@@ -34,6 +34,7 @@ while True:
         break
 
 
+
     if(events=='Enter'):
         window.hide()                                                       #Hide window
         number_of_points=int((values['points']))
@@ -54,17 +55,26 @@ while True:
 
         if(events2=='Enter'):
             for i in range(1,number_of_points+1):
-                x_values.append(int(values2['x{}'.format(i)]))
-                y_values.append(int(values2['y{}'.format(i)]))
+                x_values.append(float(values2['x{}'.format(i)]))
+                y_values.append(float(values2['y{}'.format(i)]))
             window2.close()                                                 #Close all windows
+            window.close()
             break
 
 window.close()
-x=np.array(x_values)
-y=np.array(y_values)
-plt.plot(x,y,'bo')
-m, b = np.polyfit(x,y,1)
-plt.plot(x,m*x+b,'r',label="Best Fit Line")
-plt.title("Regression Line")
-plt.legend()
-plt.show()
+
+if(x_values!=[]):                           #Stops it from the error where x/y_values is set to [] when user clicks exit
+    x = np.array(x_values)
+    y = np.array(y_values)
+    plt.plot(x, y, 'bo')
+
+    zip_xy = zip(x, y)
+    print("Points: ", list(zip_xy))
+
+    m, b = np.polyfit(x, y, 1)
+    plt.plot(x, m * x + b, 'r', label="Best Fit Line")
+
+    plt.title("Regression Line")
+    plt.legend()
+    plt.show()
+
