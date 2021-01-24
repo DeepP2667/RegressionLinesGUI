@@ -1,0 +1,24 @@
+
+Creating rows of points:
+----------------------------------------------------
+def layout2(value):
+
+    layout2=[[sg.Text("Enter points   Column 1: X   Column 2: Y")]]
+    for i in range(1,value+1):
+        layout2+=[[sg.Text("Point {}".format(i)), sg.Input(key='x{}'.format(i),size=(80,1)), sg.Input(key='y{}'.format(i),size=(80,1))]]
+    layout2+=[[sg.Button('Enter'),sg.Button('Main Menu'),sg.Button('Exit')]]
+    return layout2
+
+Value is the number of points you want to add
+Names each row Point{i} starting from 1
+Assigns each point x{i} and y{i} keys
+
+
+
+
+Adding a scroll:
+----------------------------------------------------
+def Insert_Scroll(layout2):
+    layout3=layout2
+    layout3=[[sg.Column(layout2,scrollable=True,size=(1500,1500))]]
+    return layout3
