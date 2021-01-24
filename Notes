@@ -1,6 +1,5 @@
 
 Creating rows of points:
-----------------------------------------------------
 def layout2(value):
 
     layout2=[[sg.Text("Enter points   Column 1: X   Column 2: Y")]]
@@ -15,10 +14,12 @@ Assigns each point x{i} and y{i} keys
 
 
 
-
 Adding a scroll:
-----------------------------------------------------
 def Insert_Scroll(layout2):
     layout3=layout2
     layout3=[[sg.Column(layout2,scrollable=True,size=(1500,1500))]]
     return layout3
+
+
+Zip:
+zip_xy = zip(x,y)
