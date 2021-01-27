@@ -9,12 +9,12 @@ import time
 
 sg.theme('darkgrey9')
 
-layout = [[sg.Text("How many points would you like to enter")],           #First window, enter # of points
+layout = [[sg.Text("How many points would you like to enter")],           #window, enter # of points
         [sg.Input(key='points',size=(40,1))],
         [sg.Button('Enter'),sg.Button('Exit')]]
 
 
-def layout2(value):                                                       #Second window, enter each point
+def layout2(value):                                                       #window2, enter each point
 
     layout2 = [[sg.Text("Column 1: X   Column 2: Y")],
               [sg.Text("X Label: "),sg.Input(size = (40,1),key = 'xlabel')],
@@ -27,7 +27,7 @@ def layout2(value):                                                       #Secon
     return sg.Window("Points", layout2_scroll, finalize=True)
 
 
-def window2_clear(window2,number_of_points):              #To clear window 2
+def window2_clear(window2,number_of_points):              #To clear window2
     for i in range(1, number_of_points + 1):
         window2['x{}'.format(i)].update('')
         window2['y{}'.format(i)].update('')
@@ -36,7 +36,7 @@ def window2_clear(window2,number_of_points):              #To clear window 2
     return window2
 
 
-def options_layout():                           #All different calculations with regression
+def options_layout():                           #All different calculations with regression, window3
     stat_options = [[sg.Text("Pick a calculation you would like to see")]]
 
     #All buttons for calculations
@@ -86,7 +86,7 @@ while True:             #First event loop
     if(events=='Enter'):
         window.hide()                                                    #Hide window
         number_of_points = int((values['points']))                       #Get number of points
-        window2 = layout2(number_of_points)                              #Creates window 2
+        window2 = layout2(number_of_points)                              #Creates window2
         window2.maximize()
 
         while True:
