@@ -37,13 +37,13 @@ def window2_clear(window2,number_of_points):              #To clear window2
 
 
 def options_layout():                           #All different calculations with regression, window3
-    stat_options = [[sg.Text("Pick a calculation you would like to see")]]
+    options = [[sg.Text("Pick a calculation you would like to see")]]
 
-    #All buttons for calculations
+    options += [[sg.Button('Mean'), sg.Button('Standard Deviation'), sg.Button('Z Scores')]]
 
-    stat_options += [[sg.Button('Back'), sg.Button('Exit')]]
+    options += [[sg.Button('Back'), sg.Button('Exit')]]
 
-    return sg.Window('Different Options', stat_options, finalize=True)
+    return sg.Window('Different Options', options, finalize=True)
 
 
 def plot(x_values,y_values,x_label,y_label):            #Plotting the regression line
@@ -68,6 +68,16 @@ def plot(x_values,y_values,x_label,y_label):            #Plotting the regression
     plt.close()
 
 
+def zscores(x_values, y_values):
+    x_mean = np.mean(x_values)
+    y_mean = np.mean(y_values)
+    x_std = np.std(x_values)
+    y_std = np.std(y_values)
+    x_zscore = (x_values - x_mean) / x_std
+    y_zscore = (y_values - y_mean) / y_std
+
+
+    return x_zscore , y_zscore
 
 
 
@@ -103,10 +113,11 @@ while True:             #First event loop
                 break
 
             if events2 == 'Clear':
-                window2=window2_clear(window2,number_of_points)    #Clear all inputs in window2
-                break
+                window2_clear(window2,number_of_points)             #Clear all inputs in window2
+
 
             if (events2 == 'Enter'):
+                x_values, y_values = ([] for i in range(2))                 # Sets x and y values back to [], avoid replotting the same points
                 window2.hide()
                 x_label = values2['xlabel']                      #Asks for x and y label
                 y_label = values2['ylabel']
@@ -116,9 +127,10 @@ while True:             #First event loop
 
                 window3 = options_layout()                         #Creates window3
                 window3.maximize()
+
                 plot(x_values, y_values, x_label, y_label)          #Plots it
 
-                x_values, y_values = ([] for i in range(2))       #Sets x and y values back to [], avoid replotting the same points
+
 
                 while True:
                     events3 , values3 = window3.read()
@@ -133,6 +145,21 @@ while True:             #First event loop
                         window2.close()
                         window3.close()
                         break
+
+                    if events3 == 'Mean':                       #Popup of Means
+                        sg.Popup("X mean: {}".format(np.mean(x_values)),
+                                 "Y mean: {}".format(np.mean(y_values)), title='Means')
+
+                    if events3 == 'Standard Deviation':         #Popup of Standard Dev.
+                        sg.Popup("X Standard Deviation: {}".format(np.std(x_values)),
+                                 "Y Standard Deviation: {}".format(np.std(y_values)), title='Standard Deviation')
+
+                    if events3 == 'Z Scores':
+                        x_zscores , y_zscores = zscores(x_values,y_values)
+                        sg.Popup("Z Scores (X): {}".format(x_zscores),
+                                 "Z Scores (Y): {}".format(y_zscores), title='Z Scores')
+
+
 
 window.close()
 
