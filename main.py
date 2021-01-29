@@ -1,7 +1,7 @@
 import numpy as np
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
-import time
+
 
 """Regression Line 
    Gui to enter the points and gives the best fit line for the points.
@@ -39,9 +39,9 @@ def window2_clear(window2,number_of_points):              #To clear window2
 def options_layout():                           #All different calculations with regression, window3
     options = [[sg.Text("Pick a calculation you would like to see")]]
 
-    options += [[sg.Button('Mean'), sg.Button('Standard Deviation'), sg.Button('Z Scores')]]
+    options += [[sg.Button('Mean'), sg.Button('Standard Deviation'), sg.Button('Z Scores'), sg.Button('Residuals'), sg.Button('Correlation Coefficient')]]
 
-    options += [[sg.Button('Back'), sg.Button('Exit')]]
+    options += [[sg.Button('Show graph'), sg.Button('Back'), sg.Button('Exit')]]
 
     return sg.Window('Different Options', options, finalize=True)
 
@@ -66,6 +66,14 @@ def plot(x_values,y_values,x_label,y_label):            #Plotting the regression
     plt.clf()
     plt.cla()
     plt.close()
+
+def slope_intercept(x_values,y_values):            #Plotting the regression line
+    x = np.array(x_values)
+    y = np.array(y_values)
+
+    m, b = np.polyfit(x, y, 1)
+
+    return x, y, m, b
 
 
 def zscores(x_values, y_values):
@@ -135,6 +143,9 @@ while True:             #First event loop
                 while True:
                     events3 , values3 = window3.read()
 
+                    if events3 == 'Show graph':
+                        plot(x_values, y_values, x_label, y_label)  #Show graph/fixed where you cannot see graph when clicking options
+
                     if events3 == 'Back':                   #Goes back to window2
                         window2.un_hide()
                         window3.close()
@@ -147,18 +158,37 @@ while True:             #First event loop
                         break
 
                     if events3 == 'Mean':                       #Popup of Means
-                        sg.Popup("X mean: {}".format(np.mean(x_values)),
-                                 "Y mean: {}".format(np.mean(y_values)), title='Means')
+                        sg.popup_scrolled("X mean: {}".format(np.mean(x_values)),
+                                 "Y mean: {}".format(np.mean(y_values)),
+                                          title='Means',
+                                          image='C:/Users/deepp/Desktop/Python/RegressionGUI_Images/mean_orig.png',
+                                          size=(44,1))
 
                     if events3 == 'Standard Deviation':         #Popup of Standard Dev.
-                        sg.Popup("X Standard Deviation: {}".format(np.std(x_values)),
-                                 "Y Standard Deviation: {}".format(np.std(y_values)), title='Standard Deviation')
+                        sg.popup_scrolled("X Standard Deviation: {}".format(np.std(x_values)),
+                                 "Y Standard Deviation: {}".format(np.std(y_values)),
+                                          title='Standard Deviation',
+                                          image='C:/Users/deepp/Desktop/Python/RegressionGUI_Images/StandardDeviation.png')
 
-                    if events3 == 'Z Scores':
+                    if events3 == 'Z Scores':                   #Popup for Z Scores
                         x_zscores , y_zscores = zscores(x_values,y_values)
-                        sg.Popup("Z Scores (X): {}".format(x_zscores),
-                                 "Z Scores (Y): {}".format(y_zscores), title='Z Scores')
+                        sg.popup_scrolled("Z Scores (X): {}".format(x_zscores),
+                                 "Z Scores (Y): {}".format(y_zscores),
+                                          title='Z Scores',
+                                          image='C:/Users/deepp/Desktop/Python/RegressionGUI_Images/ZScore.png')
 
+                    if events3 == 'Residuals':                  #Popup for Residuals
+                        x, y, m, b = slope_intercept(x_values,y_values)
+                        residual = y - (m*x+b)
+                        sg.popup_scrolled("Residuals: {}".format(residual),
+                                          title='Residuals',
+                                          image='C:/Users/deepp/Desktop/Python/RegressionGUI_Images/Residuals.png')
+
+                    if events3 == 'Correlation Coefficient':            #Popup for Correlation Coefficient
+                        r=np.corrcoef(x_values,y_values)
+                        sg.popup_scrolled("Correlation Coefficient: {}".format(r),
+                                          title='Correlation Coefficient',
+                                          image='C:/Users/deepp/Desktop/Python/RegressionGUI_Images/Correlation_Coefficient.png')
 
 
 window.close()
