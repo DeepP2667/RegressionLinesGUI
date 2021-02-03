@@ -29,8 +29,8 @@ while True:
         window.close()
 
 window.close()
-
-plt.plot(round_x,round_y,'bo')
+plt.figure(figsize=(8.5,4.8), dpi=90)
+plt.plot(round_x,round_y,'ro')
 
 m , b = np.polyfit(round_x,round_y,1)
 plt.plot(round_x,m*round_x+b,'k')

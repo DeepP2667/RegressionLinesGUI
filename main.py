@@ -37,7 +37,7 @@ def window2_clear(window2,number_of_points):              #To clear window2
 
 
 def options_layout():                           #All different calculations with regression, window3
-    options = [[sg.Text("Pick a calculation you would like to see")]]
+    options = [[sg.Text("Pick a calculation you would like to see:")]]
 
     options += [[sg.Button('Mean'), sg.Button('Standard Deviation'), sg.Button('Z Scores'), sg.Button('Residuals'), sg.Button('Correlation Coefficient')]]
 
@@ -47,25 +47,23 @@ def options_layout():                           #All different calculations with
 
 
 def plot(x_values,y_values,x_label,y_label):            #Plotting the regression line
+    plt.figure(figsize=(8.5,4.8), dpi=90)
     x = np.array(x_values)
     y = np.array(y_values)
-    plt.plot(x, y, 'bo')
+    plt.plot(x, y, 'ro')
 
     zip_xy = zip(x, y)
     print("Points: ", list(zip_xy))                   #Prints each point coordinate
 
     m, b = np.polyfit(x, y, 1)
-    plt.plot(x, m * x + b, 'r', label="Best Fit Line")
-
+    plt.plot(x, m * x + b, 'k', label="Best Fit Line")
     plt.title("Regression Line")
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.legend()
     plt.show()
-                        #Clearing plot
-    plt.clf()
-    plt.cla()
-    plt.close()
+
+
 
 def slope_intercept(x_values,y_values):            #Plotting the regression line
     x = np.array(x_values)
